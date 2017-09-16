@@ -5,13 +5,14 @@ html
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.2/css/bulma.css')
     link(rel='stylesheet', href='css/main.css')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
   body
     #chat-app
       #chat.has-text-centered
         section.hero.is-success
           .hero-body
             .container
-              h1.title Chat
+              h1.title Socket.io Chat
               h2 Chat Application with Node.js + socket.io
         section.section.chat-container
           .container
@@ -32,16 +33,19 @@ html
           .container
             .content
               p
-                | Powered by
+                | Powered by 
                 a(href='https://www.facebook.com/Alonesnon') Mustache As
       script.
-            const socket = io();
-            $('form').submit(function() {
-              const name = $('#name').val();
-              const message = $('#message').val();
+        const socket = io();
+        $('form').submit(function() {
+          const name = $('#name').val();
+          const message = $('#message').val();
 
-              socket.emit('chatter', `${name} : ${message}`);
-              $('#message').val('');
-              return false;
-            });
-                
+          socket.emit('chatter', `${name} : ${message}`);
+          $('#message').val('');
+          return false; 
+        });
+
+        socket.on('chatter', function(message) {
+          $('#chat-messages').append($('<li>').text(message));
+        });
